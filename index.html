@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Conversor de Cor RGB para HSB</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Helvetica, Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f4f4f9;
+      }
+      .converter-container {
+        background: #fff;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        width: 350px;
+      }
+      h1 {
+        text-align: center;
+        color: #333;
+        margin-top: 0;
+      }
+      .input-group {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+      label {
+        font-weight: bold;
+        margin-right: 10px;
+        color: #555;
+      }
+      input[type="text"] {
+        flex-grow: 1;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+      }
+      .color-preview {
+        width: 35px;
+        height: 35px;
+        margin-left: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      .output-group {
+        margin-top: 20px;
+      }
+      .slider-group {
+        margin-bottom: 15px;
+      }
+      .slider-label {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 5px;
+        color: #444;
+      }
+      input[type="range"] {
+        width: 100%;
+        -webkit-appearance: none;
+        appearance: none;
+        height: 8px;
+        border-radius: 5px;
+        background: #ddd;
+        outline: none;
+        opacity: 0.7;
+        -webkit-transition: 0.2s;
+        transition: opacity 0.2s;
+      }
+      input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #4caf50;
+        cursor: pointer;
+      }
+      input[type="range"]::-moz-range-thumb {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #4caf50;
+        cursor: pointer;
+      }
+      #hue-slider::-webkit-slider-thumb {
+        background: #f44336;
+      }
+      #hue-slider::-moz-range-thumb {
+        background: #f44336;
+      }
+      #saturation-slider::-webkit-slider-thumb {
+        background: #2196f3;
+      }
+      #saturation-slider::-moz-range-thumb {
+        background: #2196f3;
+      }
+      #brightness-slider::-webkit-slider-thumb {
+        background: #ffeb3b;
+      }
+      #brightness-slider::-moz-range-thumb {
+        background: #ffeb3b;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="converter-container">
+      <h1>Conversor RGB → HSB</h1>
+      <div class="input-group">
+        <label for="hex-input">HEX:</label>
+        <input type="text" id="hex-input" value="#a34562" maxlength="7" />
+        <div
+          id="color-preview"
+          class="color-preview"
+          style="background-color: #a34562"
+        ></div>
+      </div>
+
+      <div class="output-group">
+        <div class="slider-group">
+          <div class="slider-label">
+            <span>Matiz (H)</span>
+            <span id="h-value">340°</span>
+          </div>
+          <input
+            type="range"
+            id="hue-slider"
+            min="0"
+            max="360"
+            value="340"
+            disabled
+          />
+        </div>
+        <div class="slider-group">
+          <div class="slider-label">
+            <span>Saturação (S)</span>
+            <span id="s-value">57%</span>
+          </div>
+          <input
+            type="range"
+            id="saturation-slider"
+            min="0"
+            max="100"
+            value="57"
+            disabled
+          />
+        </div>
+        <div class="slider-group">
+          <div class="slider-label">
+            <span>Brilho (B)</span>
+            <span id="b-value">64%</span>
+          </div>
+          <input
+            type="range"
+            id="brightness-slider"
+            min="0"
+            max="100"
+            value="64"
+            disabled
+          />
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const hexInput = document.getElementById("hex-input");
+      const colorPreview = document.getElementById("color-preview");
+
+      const hueValue = document.getElementById("h-value");
+      const saturationValue = document.getElementById("s-value");
+      const brightnessValue = document.getElementById("b-value");
+
+      const hueSlider = document.getElementById("hue-slider");
+      const saturationSlider = document.getElementById("saturation-slider");
+      const brightnessSlider = document.getElementById("brightness-slider");
+
+      function hexToRgb(hex) {
+        let r = 0,
+          g = 0,
+          b = 0;
+        // 3 digits
+        if (hex.length == 4) {
+          r = "0x" + hex[1] + hex[1];
+          g = "0x" + hex[2] + hex[2];
+          b = "0x" + hex[3] + hex[3];
+          // 6 digits
+        } else if (hex.length == 7) {
+          r = "0x" + hex[1] + hex[2];
+          g = "0x" + hex[3] + hex[4];
+          b = "0x" + hex[5] + hex[6];
+        }
+        return { r: +r, g: +g, b: +b };
+      }
+
+      function rgbToHsb(r, g, b) {
+        r /= 255;
+        g /= 255;
+        b /= 255;
+        let max = Math.max(r, g, b),
+          min = Math.min(r, g, b);
+        let h,
+          s,
+          v = max;
+
+        let d = max - min;
+        s = max == 0 ? 0 : d / max;
+
+        if (max == min) {
+          h = 0; // achromatic
+        } else {
+          switch (max) {
+            case r:
+              h = (g - b) / d + (g < b ? 6 : 0);
+              break;
+            case g:
+              h = (b - r) / d + 2;
+              break;
+            case b:
+              h = (r - g) / d + 4;
+              break;
+          }
+          h /= 6;
+        }
+
+        return {
+          h: Math.round(h * 360),
+          s: Math.round(s * 100),
+          b: Math.round(v * 100),
+        };
+      }
+
+      function updateConverter() {
+        const hexColor = hexInput.value;
+
+        if (/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(hexColor)) {
+          colorPreview.style.backgroundColor = hexColor;
+
+          const { r, g, b } = hexToRgb(hexColor);
+          const { h, s, b: brightness } = rgbToHsb(r, g, b);
+
+          hueValue.textContent = h + "°";
+          saturationValue.textContent = s + "%";
+          brightnessValue.textContent = brightness + "%";
+
+          hueSlider.value = h;
+          saturationSlider.value = s;
+          brightnessSlider.value = brightness;
+        }
+      }
+
+      // Event listener para o campo de entrada
+      hexInput.addEventListener("input", updateConverter);
+
+      // Chamada inicial para o valor padrão
+      updateConverter();
+    </script>
+  </body>
+</html>
