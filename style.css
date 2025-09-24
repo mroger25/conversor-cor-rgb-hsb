@@ -1,0 +1,104 @@
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background-color: #f4f4f9;
+}
+.converter-container {
+  background: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  width: 350px;
+}
+h1 {
+  text-align: center;
+  color: #333;
+  margin-top: 0;
+}
+.input-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+label {
+  font-weight: bold;
+  margin-right: 10px;
+  color: #555;
+}
+input[type="text"] {
+  flex-grow: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+.color-preview {
+  width: 35px;
+  height: 35px;
+  margin-left: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.output-group {
+  margin-top: 20px;
+}
+.slider-group {
+  margin-bottom: 15px;
+}
+.slider-label {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  color: #444;
+}
+input[type="range"] {
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 8px;
+  border-radius: 5px;
+  background: #ddd;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: 0.2s;
+  transition: opacity 0.2s;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #4caf50;
+  cursor: pointer;
+}
+input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #4caf50;
+  cursor: pointer;
+}
+#hue-slider::-webkit-slider-thumb {
+  background: #f44336;
+}
+#hue-slider::-moz-range-thumb {
+  background: #f44336;
+}
+#saturation-slider::-webkit-slider-thumb {
+  background: #2196f3;
+}
+#saturation-slider::-moz-range-thumb {
+  background: #2196f3;
+}
+#brightness-slider::-webkit-slider-thumb {
+  background: #ffeb3b;
+}
+#brightness-slider::-moz-range-thumb {
+  background: #ffeb3b;
+}
